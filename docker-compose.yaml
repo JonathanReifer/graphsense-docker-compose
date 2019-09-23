@@ -17,7 +17,7 @@ services:
   gs-blocksci:
     image: "blocksci:latest"
     build:
-            context: . 
+            context: $DOWNLOAD_PATH/graphsense-blocksci
             dockerfile: $DOWNLOAD_PATH/graphsense-blocksci/Dockerfile
     volumes:
       - $DATA_BASE_PATH/btc-client-data:/var/data/block_data
@@ -28,20 +28,20 @@ services:
   gs-bitcoin:
     image: "graphsense-bitcoin:latest"
     build:
-        context: .
-        dockerfile: $DOWNLOAD_PATH/graphsense-bitcoin/Dockerfile
-        volumes:
-          - $DATA_BASE_PATH/btc-client-data:/opt/graphsense/data
-        ports:
-          - "8332:8332"
+        context: $DOWNLOAD_PATH/graphsense-btc-client
+        dockerfile: Dockerfile
+    volumes:
+        - $DATA_BASE_PATH/btc-client-data:/opt/graphsense/data
+    ports:
+        - "8332:8332"
             #command: tail -f /dev/null
-        command: bitcoind -conf=/opt/graphsense/bitcoin.conf -datadir=/opt/graphsense/data -rest
+    command: bitcoind -conf=/opt/graphsense/bitcoin.conf -datadir=/opt/graphsense/data -rest
         #    restart: always
 
   gs-glue:
     image: "graphsense-glue:latest"
     build:
-            contect: .
+            context: $DOWNLOAD_PATH/graphsense-glue
             dockerfile: $DOWNLOAD_PATH/graphsense-glue/Dockerfile
     volumes:
       - $DOWNLOAD_PATH/graphsense-blocksci:/graphsense-blocksci
@@ -60,6 +60,9 @@ services:
 
   gs-rest:
     image: "graphsense-rest:latest"
+    build:
+        context: $DOWNLOAD_PATH/graphsense-rest
+        dockerfile: Dockerfile
     #    volumes: 
     #  -
     ports:
@@ -69,6 +72,9 @@ services:
 
   gs-dashboard:
     image: "graphsense-dashboard:latest"
+    build:
+        context: $DOWNLOAD_PATH/graphsense-dashboard
+        dockerfile: Dockerfile
     environment:
             - REST_ENDPOINT=http://172.16.63.126:9000
             - JWT_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjQ2MjQxMDEsIm5iZiI6MTU2NDYyNDEwMSwianRpIjoiMjhiOWExMjEtNDBjZi00MTg5LTk0ODAtYmI0MmFmNDRmMTY0IiwiaWRlbnRpdHkiOiJhZG1pbiIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.OSyRWD8CZuF6Q86-ZF9wthm6NnX6jhI3sU09HACgKiI
