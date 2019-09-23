@@ -1,6 +1,6 @@
 version: '3'
 services:
-  cassandra:
+  gs-database:
     image: "cassandra:latest"
     ports:
       - "7000:7000"
@@ -9,39 +9,48 @@ services:
       - "9042:9042"
       - "9160:9160"
     environment:
-      - _JAVA_OPTIONS="-Xmx12g"
+      - _JAVA_OPTIONS="-Xmx6g"
     volumes:
-      - /mnt/graphsensevol/cassandra_data:/var/lib/cassandra
-      - /mnt/graphsensevol/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
+      - $DATA_BASE_PATH/cassandra_data:/var/lib/cassandra
+      - $DATA_BASE_PATH/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
 
   gs-blocksci:
     image: "blocksci:latest"
+    build:
+            context: . 
+            dockerfile: $DOWNLOAD_PATH/graphsense-blocksci/Dockerfile
     volumes:
-      - /mnt/graphsensevol/btc-client-data:/var/data/block_data
-      - /mnt/graphsensevol/blocksci_data:/var/data/blocksci_data
-      - /mnt/graphsensevol/graphsense-blocksci:/graphsense-blocksci
+      - $DATA_BASE_PATH/btc-client-data:/var/data/block_data
+      - $DATA_BASE_PATH/blocksci_data:/var/data/blocksci_data
+      - $DOWNLOAD_PATH/graphsense-blocksci:/graphsense-blocksci
     command: tail -f /dev/null
 
-    #  gs-bitcoin:
-    #    image: "graphsense-bitcoin:latest"
-    #    volumes:
-    #      - /mnt/graphsensevol/btc-client-data:/opt/graphsense/data
-    #    ports:
-    #      - "8332:8332"
-    #        #command: tail -f /dev/null
-    #    command: bitcoind -conf=/opt/graphsense/bitcoin.conf -datadir=/opt/graphsense/data -rest
-    #    restart: always
+  gs-bitcoin:
+    image: "graphsense-bitcoin:latest"
+    build:
+        context: .
+        dockerfile: $DOWNLOAD_PATH/graphsense-bitcoin/Dockerfile
+        volumes:
+          - $DATA_BASE_PATH/btc-client-data:/opt/graphsense/data
+        ports:
+          - "8332:8332"
+            #command: tail -f /dev/null
+        command: bitcoind -conf=/opt/graphsense/bitcoin.conf -datadir=/opt/graphsense/data -rest
+        #    restart: always
 
   gs-glue:
     image: "graphsense-glue:latest"
+    build:
+            contect: .
+            dockerfile: $DOWNLOAD_PATH/graphsense-glue/Dockerfile
     volumes:
-      - /mnt/graphsensevol/graphsense-blocksci:/graphsense-blocksci
-      - /mnt/graphsensevol/graphsense-clustering:/graphsense-clustering
-      - /mnt/graphsensevol/graphsense-transformation:/graphsense-transformation
-      - /mnt/graphsensevol/graphsense-tagpacks:/graphsense-tagpacks
-      - /mnt/graphsensevol/btc-client:/btc-client
-      - /mnt/graphsensevol/btc-client-data:/btc-client-data
-      - /mnt/graphsensevol/blocksci_data:/blocksci_data
+      - $DOWNLOAD_PATH/graphsense-blocksci:/graphsense-blocksci
+      - $DOWNLOAD_PATH/graphsense-clustering:/graphsense-clustering
+      - $DOWNLOAD_PATH/graphsense-transformation:/graphsense-transformation
+      - $DOWNLOAD_PATH/graphsense-tagpacks:/graphsense-tagpacks
+      - $DOWNLOAD_PATH/btc-client:/btc-client
+      - $DATA_BASE_PATH/btc-client-data:/btc-client-data
+      - $DATA_BASE_PATH/blocksci_data:/blocksci_data
     ports:
       - "4040:4040"
       - "8080:8080"
@@ -56,7 +65,7 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - "cassandra"
+      - "gs-database"
 
   gs-dashboard:
     image: "graphsense-dashboard:latest"
