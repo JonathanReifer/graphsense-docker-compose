@@ -1,7 +1,7 @@
 
 
-DATA_BASE_PATH=data
-DOWNLOAD_PATH=downloads
+DATA_PATH=gs-data
+DOWNLOAD_PATH=gs-downloads
 REST_USER=restadmin
 REST_PASSWD=somerestpasshere
 

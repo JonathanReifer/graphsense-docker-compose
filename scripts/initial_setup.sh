@@ -15,16 +15,25 @@ if [ ! -f $BASE_PATH/.env ]; then
     cp $BASE_PATH/template_configs/env_template $BASE_PATH/.env
 fi
 
-source ../.env
+. $BASE_PATH/.env
 
 cd $DATA_PATH
-mkdir blocksci_data
-mkdir btc-client-data
+if [ ! -d $DATA_PATH/blocksci_data ]; then
+    mkdir $DATA_PATH/blocksci_data
+fi
+
+if [ ! -d $DATA_PATH/btc-client-data ]; then
+    mkdir $DATA_PATH/btc-client-data
+    chmod a+rwX $DATA_PATH/btc-client-data
+fi
 ##NEED TO FIX
-chmod a+rwX btc-client-data
-mkdir cassandra_data
-mkdir cassandra_etc
-cp $BASE_PATH/template_configs/cassandra.yaml $DATA_PATH/cassandra_etc/
+if [ ! -d $DATA_PATH/btc-client-data ]; then
+    mkdir $DATA_PATH/cassandra_data
+fi
+if [ ! -d $DATA_PATH/btc-client-data ]; then
+    mkdir $DATA_PATH/cassandra_etc
+    #cp $BASE_PATH/template_configs/cassandra.yaml $DATA_PATH/cassandra_etc/
+fi
 
 cd $DOWNLOAD_PATH
 git clone https://github.com/JonathanReifer/graphsense-transformation.git
@@ -56,7 +65,7 @@ git clone https://github.com/graphsense/btc-client.git graphsense-btc-client
 #git clone https://github.com/graphsense/ltc-client.git graphsense-ltc-client
 
 
-cd $GSBASE_PATH
+cd $DOWNLOAD_PATH
 git clone https://github.com/graphsense/graphsense-tagpacks.git graphsense-tagpacks
 
 

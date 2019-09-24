@@ -11,8 +11,8 @@ services:
     environment:
       - _JAVA_OPTIONS="-Xmx6g"
     volumes:
-      - $DATA_BASE_PATH/cassandra_data:/var/lib/cassandra
-        #   - $DATA_BASE_PATH/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
+      - $DATA_PATH/cassandra_data:/var/lib/cassandra
+        #   - $DATA_PATH/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
 
   gs-blocksci:
     image: "blocksci:latest"
@@ -20,8 +20,8 @@ services:
             context: $DOWNLOAD_PATH/graphsense-blocksci
             dockerfile: $DOWNLOAD_PATH/graphsense-blocksci/Dockerfile
     volumes:
-      - $DATA_BASE_PATH/btc-client-data:/var/data/block_data
-      - $DATA_BASE_PATH/blocksci_data:/var/data/blocksci_data
+      - $DATA_PATH/btc-client-data:/var/data/block_data
+      - $DATA_PATH/blocksci_data:/var/data/blocksci_data
       - $DOWNLOAD_PATH/graphsense-blocksci:/graphsense-blocksci
     command: tail -f /dev/null
 
@@ -31,7 +31,7 @@ services:
         context: $DOWNLOAD_PATH/graphsense-btc-client
         dockerfile: Dockerfile
     volumes:
-        - $DATA_BASE_PATH/btc-client-data:/opt/graphsense/data
+        - $DATA_PATH/btc-client-data:/opt/graphsense/data
     ports:
         - "8332:8332"
             #command: tail -f /dev/null
@@ -49,8 +49,8 @@ services:
       - $DOWNLOAD_PATH/graphsense-transformation:/graphsense-transformation
       - $DOWNLOAD_PATH/graphsense-tagpacks:/graphsense-tagpacks
       - $DOWNLOAD_PATH/btc-client:/btc-client
-      - $DATA_BASE_PATH/btc-client-data:/btc-client-data
-      - $DATA_BASE_PATH/blocksci_data:/blocksci_data
+      - $DATA_PATH/btc-client-data:/btc-client-data
+      - $DATA_PATH/blocksci_data:/blocksci_data
     ports:
       - "4040:4040"
       - "8080:8080"
