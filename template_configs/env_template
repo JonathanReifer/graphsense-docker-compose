@@ -2,7 +2,8 @@
 
 DATA_BASE_PATH=data
 DOWNLOAD_PATH=downloads
-
+REST_USER=restadmin
+REST_PASSWD=somerestpasshere
 
 
 

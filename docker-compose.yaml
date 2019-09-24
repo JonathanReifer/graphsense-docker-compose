@@ -12,7 +12,7 @@ services:
       - _JAVA_OPTIONS="-Xmx6g"
     volumes:
       - $DATA_BASE_PATH/cassandra_data:/var/lib/cassandra
-      - $DATA_BASE_PATH/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
+        #   - $DATA_BASE_PATH/cassandra_etc/cassandra.yaml:/etc/cassandra/cassandra.yaml
 
   gs-blocksci:
     image: "blocksci:latest"
@@ -41,8 +41,8 @@ services:
   gs-glue:
     image: "graphsense-glue:latest"
     build:
-            context: $DOWNLOAD_PATH/graphsense-glue
-            dockerfile: $DOWNLOAD_PATH/graphsense-glue/Dockerfile
+      context: $DOWNLOAD_PATH/graphsense-glue
+      dockerfile: $DOWNLOAD_PATH/graphsense-glue/Dockerfile
     volumes:
       - $DOWNLOAD_PATH/graphsense-blocksci:/graphsense-blocksci
       - $DOWNLOAD_PATH/graphsense-clustering:/graphsense-clustering
@@ -63,6 +63,9 @@ services:
     build:
         context: $DOWNLOAD_PATH/graphsense-rest
         dockerfile: Dockerfile
+        args:
+          rest_user: $REST_USER
+          rest_passwd: $REST_PASSWD
     #    volumes: 
     #  -
     ports:

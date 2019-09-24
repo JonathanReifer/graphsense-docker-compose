@@ -1,15 +1,30 @@
 #!/bin/bash
 
 #BASE_PATH=.
-DATA_PATH=/mnt/graphsense-stor1
-DOWNLOAD_PATH=/mnt/graphsense-stor1
+#DATA_PATH=/mnt/graphsense-stor1
+#DOWNLOAD_PATH=/mnt/graphsense-stor1
+
+BASE_PATH=$(pwd)
+if [ ! -f docker-compose.yaml ]; then
+    echo "Docker-compose file not found, run from directory with dc file"
+    exit -1;
+fi
+
+if [ ! -f $BASE_PATH/.env ]; then
+    echo ".env File not found!"
+    cp $BASE_PATH/template_configs/env_template $BASE_PATH/.env
+fi
+
+source ../.env
 
 cd $DATA_PATH
 mkdir blocksci_data
 mkdir btc-client-data
+##NEED TO FIX
+chmod a+rwX btc-client-data
 mkdir cassandra_data
 mkdir cassandra_etc
-#cp cassandra.yaml cassandra_etc
+cp $BASE_PATH/template_configs/cassandra.yaml $DATA_PATH/cassandra_etc/
 
 cd $DOWNLOAD_PATH
 git clone https://github.com/JonathanReifer/graphsense-transformation.git
@@ -25,6 +40,7 @@ git clone https://github.com/graphsense/graphsense-dashboard.git graphsense-dash
 #git build -t graphsense-dashboard .
 cd $DOWNLOAD_PATH
 git clone https://github.com/graphsense/graphsense-REST.git graphsense-rest
+cp $BASE_PATH/template_config/config.json graphsense-rest/app/
 #cd $DOWNLOAD_PATH/graphsense-rest
 #git build -t graphsense-rest .
 cd $DOWNLOAD_PATH
