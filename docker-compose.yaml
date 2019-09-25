@@ -79,8 +79,10 @@ services:
         context: $DOWNLOAD_PATH/graphsense-dashboard
         dockerfile: Dockerfile
     environment:
-            - REST_ENDPOINT=http://172.16.63.126:9000
-            - JWT_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjQ2MjQxMDEsIm5iZiI6MTU2NDYyNDEwMSwianRpIjoiMjhiOWExMjEtNDBjZi00MTg5LTk0ODAtYmI0MmFmNDRmMTY0IiwiaWRlbnRpdHkiOiJhZG1pbiIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.OSyRWD8CZuF6Q86-ZF9wthm6NnX6jhI3sU09HACgKiI
+            - REST_ENDPOINT=$REST_ENDPOINT
+            - JWT_TOKEN=$JWT_TOKEN
+    env_file:
+      - $DATA_PATH/gs-rest/JWT_TOKEN
     ports:
       - "8000:80"
     depends_on:

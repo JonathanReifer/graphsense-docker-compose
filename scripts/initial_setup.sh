@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#BASE_PATH=.
-#DATA_PATH=/mnt/graphsense-stor1
-#DOWNLOAD_PATH=/mnt/graphsense-stor1
 
 BASE_PATH=$(pwd)
 if [ ! -f docker-compose.yaml ]; then
@@ -49,7 +46,7 @@ git clone https://github.com/graphsense/graphsense-dashboard.git graphsense-dash
 #git build -t graphsense-dashboard .
 cd $DOWNLOAD_PATH
 git clone https://github.com/graphsense/graphsense-REST.git graphsense-rest
-cp $BASE_PATH/template_config/config.json graphsense-rest/app/
+cp $BASE_PATH/template_configs/config.json graphsense-rest/app/
 #cd $DOWNLOAD_PATH/graphsense-rest
 #git build -t graphsense-rest .
 cd $DOWNLOAD_PATH

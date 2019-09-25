@@ -1,0 +1,5 @@
+version: "3"
+
+services:
+  gs-bitcoin:
+    entrypoint: ["echo", "Service foo disabled"]

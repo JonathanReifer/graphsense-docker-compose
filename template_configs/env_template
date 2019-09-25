@@ -5,5 +5,8 @@ DOWNLOAD_PATH=gs-downloads
 REST_USER=restadmin
 REST_PASSWD=somerestpasshere
 
+REST_ENDPOINT=http://192.168.25.214:9000
+JWT_TOKEN=
+
 
 
