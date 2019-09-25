@@ -9,7 +9,7 @@
 
 #docker-compose exec gs-blocksci /graphsense-blocksci/blocksci_export.py -c /var/data/blocksci_data/btc.cfg -d gs-database -k btc_raw --start 0 --end 5
 
-docker-compose exec gs-glue submit.sh -m 24 -c gs-database
+docker-compose exec gs-glue /root/graphsense-transformation-0.4.1/submit.sh -m 24 -c gs-database
 
 
 

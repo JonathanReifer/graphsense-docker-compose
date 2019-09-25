@@ -32,9 +32,12 @@ if [ ! -d $DATA_PATH/btc-client-data ]; then
     #cp $BASE_PATH/template_configs/cassandra.yaml $DATA_PATH/cassandra_etc/
 fi
 
-cd $DOWNLOAD_PATH
-git clone https://github.com/JonathanReifer/graphsense-transformation.git
-cd $DOWNLOAD_PATH/graphsense-transformation
+if [ ! -d $DOWNLOAD_PATH/graphsense-transformation ]; then
+	git clone https://github.com/JonathanReifer/graphsense-transformation.git
+else
+	cd $DOWNLOAD_PATH/graphsense-transformation
+	git pull
+fi
 #docker build -t graphsense-transformation .
 cd $DOWNLOAD_PATH
 git clone https://github.com/JonathanReifer/graphsense-glue.git
